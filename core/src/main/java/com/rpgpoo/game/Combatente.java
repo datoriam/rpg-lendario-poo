@@ -6,19 +6,24 @@ public abstract class Combatente {
     private int vidaAtual;
     private int nivel;
     private int dano;
+    private int xp;
 
-    public Combatente (String nome, int vidaTotal) {
+    public Combatente (String nome, int vidaTotal, int danoBase) {
         this.nome = nome;
         this.vidaTotal = vidaTotal;
         this.vidaAtual = vidaTotal;
         this.nivel = 1;
-        this.dano = 10;
+        this.dano = danoBase;
+        this.xp = 0;
     }
 
-    abstract void atacar(Combatente alvo);
+    public abstract void atacar(Combatente alvo);
+    protected abstract void evoluirStats();
+
 
     public String getNome(){return nome;}
     public int getDano(){return dano;}
+    public int getNivel(){return nivel;}
     public int getVidaAtual(){return vidaAtual;}
     public int getVidaTotal(){return vidaTotal;}
 
@@ -26,7 +31,7 @@ public abstract class Combatente {
         return vidaAtual > 0;
     }
 
-    void statusVida(){
+    public void statusVida(){
         if (vidaAtual <= 0){
             vidaAtual = 0;
             System.out.println(this.nome + " está fora de combate!");
@@ -36,17 +41,31 @@ public abstract class Combatente {
         }
     }
 
-    void receberDano(int danoRecebido){
+    public void receberDano(int danoRecebido){
         vidaAtual -= danoRecebido;
         System.out.println(this.nome + " recebeu " + danoRecebido + " de dano!");
         statusVida();
     }
 
-    void subirNivel(){
+    public void ganharXP(int quantidade){
+        this.xp += quantidade;
+        System.out.println(this.nome + " ganhou " + quantidade + " de XP!");
+
+        if(xp >= 100){
+            this.xp = this.xp - 100;
+            subirNivel();
+        }
+    }
+    protected void atualizaAtributos(int aumentaDano, int aumentaVida){
+        this.dano += aumentaDano;
+        this.vidaTotal += aumentaVida;
+        vidaAtual = vidaTotal;
+    }
+
+    public void subirNivel(){
         nivel++;
-        dano += 10;
-        vidaTotal += 20;
         vidaAtual = vidaTotal;
         System.out.println(this.nome + " subiu para o nível " + this.nivel);
+        evoluirStats();
     }
 }
