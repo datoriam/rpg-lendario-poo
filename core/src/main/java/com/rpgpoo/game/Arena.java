@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
 
-public class RpgLogics extends ApplicationAdapter {
+public class Arena extends ApplicationAdapter {
     int x = 50;
     int y = 50;
     int xSpeed = 5;
