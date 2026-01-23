@@ -39,6 +39,15 @@ public class Arcanista extends Combatente {
         System.out.println(this.getNome() + " está lançando o feitiço!!");
         System.out.println("A mana atual de " + getNome() + " é " + this.manaAtual);
         alvo.receberDano(danoMagico);
+
+        //para aplicar o sleep 
+        if(this.getNivel() >= 5) {
+            alvo.aplicarSono();
+        } else if (this.getNivel() >= 6) {
+            alvo.queimarInimigo();
+        } else {
+            alvo.receberDano(danoMagico);
+        }
     }
 
     @Override

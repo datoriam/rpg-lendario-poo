@@ -22,11 +22,15 @@ public class Batalha {
     public void executarTurno() {
         if (turnoChoose){
             System.out.println("É a vez de " + heroi.getNome() + "!");
+            if(heroi.processaStatus()) {
             heroi.atacar(inimigo);
+        }
         }
         else{
             System.out.println("É a vez de " + inimigo.getNome() + "!");
+            if(heroi.processaStatus()) {
             inimigo.atacar(heroi);
+        }
         }
         proximoTurno();//Por enquanto não terá a opção pra escolher qual dos alvos gerados o combatente pode atacar
     }

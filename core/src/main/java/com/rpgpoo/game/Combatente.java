@@ -1,4 +1,5 @@
 package com.rpgpoo.game;
+import java.nio.channels.Pipe.SourceChannel;
 import java.security.Guard;
 import java.util.Scanner;
 
@@ -9,6 +10,8 @@ public abstract class Combatente {
     private int nivel;
     private int dano;
     private int xp;
+    private boolean dormindo = false;
+    private boolean queimando = false;
 
     public Combatente (String nome, int vidaTotal, int danoBase) {
         this.nome = nome;
@@ -72,6 +75,34 @@ public abstract class Combatente {
         vidaAtual -= danoRecebido;
         System.out.println(this.nome + " recebeu " + danoRecebido + " de dano!");
         statusVida();
+    }
+    //Método para o Arcanista infligir nos inimigos sono
+    public void aplicarSono() {
+        this.dormindo = true;
+        System.out.println( " Shiuu" + this.nome + " Está dormindo, ele ficará uma rodada sem jogar.");
+    }
+
+    public void queimarInimigo() {
+        this.queimando = true;
+        System.out.println(this.nome + " começou a pegar fogo!!");
+    }
+
+    //Método para a arena checar antes do turno iniciar se ele pode ou não atacar
+    public boolean processaStatus() {
+        //primeiro vai verificar se está pegando fogo
+        if (this.queimando) {
+            int danoFogo = 5;
+            this.receberDano(danoFogo);
+            System.out.println(this.nome + " nesta rodada irá receber" + danoFogo + " por queimadura");
+        } 
+        // verifica se está dormindo
+        if (this.dormindo) {
+            System.out.println(this.nome + " está dormindo e perde a vez");
+            this.dormindo = false;
+            return false;
+        }
+
+        return true;
     }
 
     public void ganharXP(int quantidade){
