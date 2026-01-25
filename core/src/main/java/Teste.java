@@ -1,5 +1,5 @@
-import com.rpgpoo.game.Arcanista;
-import com.rpgpoo.game.Combatente;
+import com.rpgpoo.game.entity.Arcanista;
+
 /*Aqueles que desejarem testar suas subclasses antes de levá-las para a parte gráfica, sintam-se a vontade em realizar
 * os testes nesse arquivo. Basta instanciar a subclasse desejada e simular uma batalha de turnos e cada método!*/
 public class Teste {

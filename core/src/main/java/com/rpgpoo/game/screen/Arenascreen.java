@@ -1,4 +1,4 @@
-package com.rpgpoo.game;
+package com.rpgpoo.game.screen;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -11,14 +11,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import sun.awt.windows.ThemeReader;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import com.rpgpoo.game.battle.Batalha;
+import com.rpgpoo.game.entity.Combatente;
+import com.rpgpoo.game.entity.Guardiao;
+import com.rpgpoo.game.entity.enemy.Slime;
 //import java.lang.String;
 
-public class Arena extends ApplicationAdapter {
+public class Arenascreen extends ApplicationAdapter {
 
     // parte do campo e da câmera
     private ShapeRenderer shape;

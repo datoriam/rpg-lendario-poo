@@ -1,4 +1,4 @@
-package com.rpgpoo.game;
+package com.rpgpoo.game.entity;
 
 public abstract class Combatente {
     private String mensagem;
@@ -24,7 +24,7 @@ public abstract class Combatente {
     public void atacar(Combatente alvo){
         // Limpa mensagem antes de cada ataque
         setMensagem("");
-        
+
         String mensagemAtaque = getNome() + " atacou e causou " + getDano() + " de dano";
         setMensagem(mensagemAtaque);
         alvo.receberDano(getDano());
@@ -39,18 +39,18 @@ public abstract class Combatente {
             this.mensagem += "\n" + msg;
         }
     }
-    
+
     // Novo método para limpar mensagens
     public void limparMensagem() {
         this.mensagem = "";
     }
 
-    public String getMensagem() { 
+    public String getMensagem() {
         String msg = mensagem;
         mensagem = ""; // Limpa após pegar (opcional)
-        return msg; 
+        return msg;
     }
-    
+
     // Resto dos métodos permanece igual...
     public String getNome(){return nome;}
     public int getDano(){return dano;}
@@ -87,7 +87,7 @@ public abstract class Combatente {
             subirNivel();
         }
     }
-    
+
     protected void atualizaAtributos(int aumentaDano, int aumentaVida){
         this.dano += aumentaDano;
         this.vidaTotal += aumentaVida;
@@ -106,13 +106,13 @@ public abstract class Combatente {
 
     public boolean processaStatus() {
         boolean podeAtacar = true;
-        
+
         if (this.queimando) {
             int danoFogo = 5;
             this.receberDano(danoFogo);
             setMensagem(this.nome + " recebe " + danoFogo + " de dano por queimadura!");
         }
-        
+
         if (this.dormindo) {
             setMensagem(this.nome + " está dormindo e perde a vez");
             this.dormindo = false;

@@ -1,4 +1,4 @@
-package com.rpgpoo.game;
+package com.rpgpoo.game.entity;
 
 public class Atirador extends Combatente {
 
