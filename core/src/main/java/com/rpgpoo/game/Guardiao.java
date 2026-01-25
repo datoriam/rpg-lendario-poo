@@ -1,5 +1,7 @@
 package com.rpgpoo.game;
+
 public class Guardiao extends Combatente {
+<<<<<<< HEAD
  // ATRIBUTOS ESPECIAIS DO GUARDIÃO
     private int vigor;
     private int vigorMaximo;
@@ -99,6 +101,21 @@ public class Guardiao extends Combatente {
                ", vigor=" + vigor + "/" + vigorMaximo +
                ", podeBloquear=" + podeBloquear() +
                '}';
+=======
+
+    public Guardiao(String nome, int vidaTotal, int danoBase) {
+        super(nome, vidaTotal, danoBase);
+    }
+
+    @Override
+    public void atacar(Combatente alvo) {
+
+    }
+
+    @Override
+    protected void evoluirStats() {
+
+>>>>>>> ff3b2bdfcf9b3ada019dd8cbcd2c8a4a2f277b26
     }
 }
 
