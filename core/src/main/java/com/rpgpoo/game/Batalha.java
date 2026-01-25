@@ -1,5 +1,7 @@
 package com.rpgpoo.game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Batalha {
@@ -9,6 +11,16 @@ public class Batalha {
     private Combatente heroi;
     private Combatente inimigo;
     private StringBuilder logTurno; // Para acumular mensagens durante o turno
+    private List<Combatente> timeA;
+    private List<Combatente> timeB;
+
+    private Random random; //gera aleatoriedade
+
+    public Batalha () {
+        this.timeA = new ArrayList<>();
+        this.timeB = new ArrayList<>();
+        this.random = new Random();
+    }
 
     public Batalha(int andarAtual, Combatente heroi, Combatente inimigo) {
         this.heroi = heroi;
@@ -22,6 +34,16 @@ public class Batalha {
 
     public void iniciar() {
         turnoChoose = new Random().nextBoolean();
+    }
+
+        public void adicionarCombatente(Combatente c, String time) {
+        if (time.equalsIgnoreCase("A")){ //Corrigi o erro do timeA e time B na hora de gerar o case
+            timeA.add (c);
+        } else if (time.equalsIgnoreCase("B")) {
+            timeB.add (c);
+        } else {
+            System.out.println(" Time inválido! Use A ou B! ");
+        }
     }
 
     public void executarTurno() {

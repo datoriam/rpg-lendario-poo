@@ -34,26 +34,6 @@ public class Arena extends ApplicationAdapter {
     private float tempoAnimacao;
     private OrthographicCamera camera;
 
-    private List<Combatente> timeA;
-    private List<Combatente> timeB;
-
-    private Random random; //gera aleatoriedade
-
-    public Arena () {
-        this.timeA = new ArrayList<>();
-        this.timeB = new ArrayList<>();
-        this.random = new Random();
-    }
-
-    public void adicionarCombatente(Combatente c, String time) {
-        if (time.equalsIgnoreCase("A")){ //Corrigi o erro do timeA e time B na hora de gerar o case
-            timeA.add (c);
-        } else if (time.equalsIgnoreCase("B")) {
-            timeB.add (c);
-        } else {
-            System.out.println(" Time inválido! Use A ou B! ");
-        }
-    }
 
     @Override
     public void create(){
