@@ -1,64 +1,64 @@
 package com.rpgpoo.game;
 
 public class Guardiao extends Combatente {
- // Atributos específicos do Guardião
-    private int vigor;
-    private int vigorMaximo;
+    private int vigor = 50;
     private final int CUSTO_BLOQUEIO = 15;
     
     public Guardiao(String nome) {
-        // Guardião: alta vida, dano moderado
-        super(nome, 150, 8);
-        this.vigorMaximo = 50;
-        this.vigor = vigorMaximo;
-        setMensagem(nome + " o Guardião entra na batalha!");
+        super(nome, 120, 10);
     }
     
     @Override
     public void atacar(Combatente alvo) {
-        // Guardião ataca com arma pesada
-        setMensagem(getNome() + " ataca com sua espada pesada!");
+        limparMensagem(); // Limpa antes do ataque
+        setMensagem(getNome() + " ataca com martelo pesado!");
         alvo.receberDano(getDano());
         
-        // Recupera vigor ao atacar
-        int recuperacao = 5;
-        this.vigor = Math.min(this.vigor + recuperacao, vigorMaximo);
+        vigor = Math.min(vigor + 5, 50);
+        setMensagem("Recuperou 5 de vigor [" + vigor + "/50]");
     }
     
     @Override
     public void receberDano(int danoRecebido) {
-        // LÓGICA DO BLOQUEIO: Se tiver vigor suficiente, anula dano e consome vigor
+        limparMensagem(); // Limpa antes de receber dano
         
         if (vigor >= CUSTO_BLOQUEIO) {
-            // BLOQUEIO BEM-SUCEDIDO - dano anulado
-            setMensagem(getNome() + " BLOQUEIA o ataque com seu escudo!");
-            this.vigor -= CUSTO_BLOQUEIO;
+            // BLOQUEIO - mensagem IMEDIATA
+            setMensagem(getNome() + " BLOQUEIA o ataque com escudo!");
+            setMensagem("Dano " + danoRecebido + " → 0");
+            
+            vigor -= CUSTO_BLOQUEIO;
+            setMensagem("Consumiu " + CUSTO_BLOQUEIO + " de vigor [" + vigor + "/50]");
         } else {
-            // VIGOR INSUFICIENTE - dano normal
+            // SEM BLOQUEIO - dano normal
+            setMensagem(getNome() + " não tem vigor para bloquear!");
             super.receberDano(danoRecebido);
         }
     }
     
     @Override
     protected void evoluirStats() {
-        // Guardião ganha mais vida e dano por nível
-        super.atualizaAtributos(2, 35);
+        super.atualizaAtributos(3, 30);
+        vigor = 50;
+        setMensagem("Vigor restaurado para 50!");
+    }
+    
+    @Override
+    public boolean processaStatus() {
+        boolean podeAtacar = super.processaStatus();
         
-        // Aumenta vigor máximo também
-        this.vigorMaximo += 10;
-        this.vigor = vigorMaximo; // Recupera todo vigor ao subir de nível
+        if (podeAtacar) {
+            int recuperacao = 3;
+            int vigorAntes = vigor;
+            vigor = Math.min(vigor + recuperacao, 50);
+            
+            if (vigorAntes < 50 && vigor > vigorAntes) {
+                setMensagem("🔄 " + getNome() + " recupera " + (vigor - vigorAntes) + " de vigor passivamente");
+            }
+        }
+        
+        return podeAtacar;
     }
     
-    // Métodos específicos do Guardião
-    public int getVigor() {
-        return vigor;
-    }
-    
-    public int getVigorMaximo() {
-        return vigorMaximo;
-    }
-    
-    public boolean podeBloquear() {
-        return vigor >= CUSTO_BLOQUEIO;
-    }
+    public int getVigor() { return vigor; }
 }

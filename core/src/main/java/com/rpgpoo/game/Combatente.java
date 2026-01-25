@@ -1,5 +1,4 @@
 package com.rpgpoo.game;
-import java.nio.channels.Pipe.SourceChannel;
 
 public abstract class Combatente {
     private String mensagem;
@@ -19,24 +18,45 @@ public abstract class Combatente {
         this.nivel = 5;
         this.dano = danoBase;
         this.xp = 0;
+        this.mensagem = ""; // Inicializa mensagem vazia
     }
 
     public void atacar(Combatente alvo){
-        setMensagem(getNome() + " atacou e causou " + getDano() + " de dano");
+        // Limpa mensagem antes de cada ataque
+        setMensagem("");
+        
+        String mensagemAtaque = getNome() + " atacou e causou " + getDano() + " de dano";
+        setMensagem(mensagemAtaque);
         alvo.receberDano(getDano());
     }
 
     protected void evoluirStats(){};
 
-    public void setMensagem(String msg){mensagem += "\n" + msg;}
+    public void setMensagem(String msg){
+        if (this.mensagem == null || this.mensagem.isEmpty()) {
+            this.mensagem = msg;
+        } else {
+            this.mensagem += "\n" + msg;
+        }
+    }
+    
+    // Novo método para limpar mensagens
+    public void limparMensagem() {
+        this.mensagem = "";
+    }
 
-    public String getMensagem() { return mensagem; }
+    public String getMensagem() { 
+        String msg = mensagem;
+        mensagem = ""; // Limpa após pegar (opcional)
+        return msg; 
+    }
+    
+    // Resto dos métodos permanece igual...
     public String getNome(){return nome;}
     public int getDano(){return dano;}
     public int getNivel(){return nivel;}
     public int getVidaAtual(){return vidaAtual;}
     public int getVidaTotal(){return vidaTotal;}
-
 
     public boolean checaVida(){
         return vidaAtual > 0;
@@ -67,16 +87,16 @@ public abstract class Combatente {
             subirNivel();
         }
     }
+    
     protected void atualizaAtributos(int aumentaDano, int aumentaVida){
         this.dano += aumentaDano;
         this.vidaTotal += aumentaVida;
         vidaAtual = vidaTotal;
     }
 
-    //Método para o Arcanista infligir nos inimigos sono
     public void aplicarSono() {
         this.dormindo = true;
-        setMensagem( "Shiuu" + this.nome + " está dormindo, ele ficará uma rodada sem jogar.");
+        setMensagem("Shiuu! " + this.nome + " está dormindo, ele ficará uma rodada sem jogar.");
     }
 
     public void queimarInimigo() {
@@ -84,24 +104,23 @@ public abstract class Combatente {
         setMensagem(this.nome + " começou a pegar fogo!!");
     }
 
-    //Método para a arena checar antes do turno iniciar se ele pode ou não atacar
     public boolean processaStatus() {
-        //primeiro vai verificar se está pegando fogo
+        boolean podeAtacar = true;
+        
         if (this.queimando) {
             int danoFogo = 5;
             this.receberDano(danoFogo);
-            setMensagem(this.nome + " nesta rodada irá receber" + danoFogo + " por queimadura");
+            setMensagem(this.nome + " recebe " + danoFogo + " de dano por queimadura!");
         }
-        // verifica se está dormindo
+        
         if (this.dormindo) {
             setMensagem(this.nome + " está dormindo e perde a vez");
             this.dormindo = false;
-            return false;
+            podeAtacar = false;
         }
 
-        return true;
+        return podeAtacar;
     }
-
 
     public void subirNivel(){
         nivel++;

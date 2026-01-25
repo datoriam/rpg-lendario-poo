@@ -60,8 +60,8 @@ public class Arena extends ApplicationAdapter {
         this.shape = new ShapeRenderer();
         this.font = new BitmapFont();
         font.getData().setScale(2.0f);
-        this.imgHeroi = new Texture("mago.png");
-        this.jogador = new Arcanista("Maguin");
+        this.imgHeroi = new Texture("guardiao.png");
+        this.jogador = new Guardiao("Luluzin");
         this.imgInimigo = new Texture("slime.png");
         TextureRegion[][] tmp = TextureRegion.split(imgInimigo, imgInimigo.getWidth() / 4, imgInimigo.getHeight());
         animacaoSlime = new Animation<>(0.2f, tmp[0]);

@@ -8,12 +8,14 @@ public class Batalha {
     private boolean turnoChoose;
     private Combatente heroi;
     private Combatente inimigo;
+    private StringBuilder logTurno; // Para acumular mensagens durante o turno
 
     public Batalha(int andarAtual, Combatente heroi, Combatente inimigo) {
         this.heroi = heroi;
         this.inimigo = inimigo;
         this.andarAtual = andarAtual;
         mensagemAtual = "";
+        this.logTurno = new StringBuilder();
     }
 
     public String getMensagemAtual(){ return this.mensagemAtual; }
@@ -23,31 +25,74 @@ public class Batalha {
     }
 
     public void executarTurno() {
+        logTurno.setLength(0); // Limpa o log do turno anterior
+        
         if(terminou()){
             return;
         }
-        else if (turnoChoose) {
+        
+        if (turnoChoose) {
+            // TURNO DO HERÓI
+            logTurno.append("TURNO DO HERÓI: ").append(heroi.getNome()).append("\n");
+            
             if(heroi.processaStatus()) {
+                // Limpa mensagens antigas do herói
+                heroi.setMensagem("");
+                
+                logTurno.append(heroi.getNome()).append(" ataca ").append(inimigo.getNome()).append("!\n").append(" Heroi causou ").append(heroi.getDano());
                 heroi.atacar(inimigo);
-                this.mensagemAtual = heroi.getMensagem();
+                
+                // Adiciona mensagens DURANTE o ataque
+                if (!heroi.getMensagem().isEmpty()) {
+                    logTurno.append(heroi.getMensagem()).append("\n");
+                }
+            }
+            
+            // Verifica se inimigo foi derrotado DURANTE o ataque
+            if (!inimigo.checaVida()) {
+                logTurno.append("💀 ").append(inimigo.getNome()).append(" foi derrotado!\n");
             }
         }
-        else{
+        else {
+            // TURNO DO INIMIGO
+            logTurno.append("TURNO DO INIMIGO: ").append(inimigo.getNome()).append("\n");
+            
             if(heroi.processaStatus()) {
+                // Limpa mensagens antigas do inimigo
+                inimigo.setMensagem("");
+                
+                logTurno.append(inimigo.getNome()).append(" ataca ").append(heroi.getNome()).append("!\n").append(" Inimigo causou ").append(inimigo.getDano());
                 inimigo.atacar(heroi);
-                this.mensagemAtual = inimigo.getMensagem();
+                
+                // Adiciona mensagens DURANTE o ataque (incluindo bloqueio do Guardião)
+                if (!inimigo.getMensagem().isEmpty()) {
+                    logTurno.append(inimigo.getMensagem()).append("\n");
+                }
+                
+                // Se o herói é Guardião, também mostra suas mensagens de bloqueio
+                if (!heroi.getMensagem().isEmpty()) {
+                    logTurno.append(heroi.getMensagem()).append("\n");
+                }
+            }
+            
+            // Verifica se herói foi derrotado DURANTE o ataque
+            if (!heroi.checaVida()) {
+                logTurno.append("💀 ").append(heroi.getNome()).append(" foi derrotado!\n");
             }
         }
-        proximoTurno();//Por enquanto não terá a opção pra escolher qual dos alvos gerados o combatente pode atacar
+        
+        // Atualiza mensagem atual com TODO o log do turno
+        mensagemAtual = logTurno.toString();
+        proximoTurno();
     }
 
     public boolean terminou() {
         if (!inimigo.checaVida()) {
-            mensagemAtual = heroi.getNome() + " venceu!";
-            andarAtual++;
+            mensagemAtual = heroi.getNome() + " VENCEU! Andar " + andarAtual + " completo!";
+            //andarAtual++;
             return true;
         } else if (!heroi.checaVida()) {
-            mensagemAtual = heroi.getNome() + " perdeu!";
+            mensagemAtual = heroi.getNome() + " PERDEU! Fim da jornada...";
             return true;
         }
         return false;
@@ -55,6 +100,11 @@ public class Batalha {
 
     public void proximoTurno() {
         turnoChoose = !turnoChoose;
-        }
-
+    }
+    
+    // Método para obter status atual dos combatentes
+    public String getStatusCombatentes() {
+        return heroi.getNome() + ": " + heroi.getVidaAtual() + "/" + heroi.getVidaTotal() + " PV" +
+               "\n" + inimigo.getNome() + ": " + inimigo.getVidaAtual() + "/" + inimigo.getVidaTotal() + " PV";
+    }
 }
