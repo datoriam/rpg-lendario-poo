@@ -50,6 +50,8 @@ public class Arenascreen extends ApplicationAdapter {
         this.camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 720);
         this.batalha = new Batalha(0,jogador,npc);
+        this.batalha.adicionarCombatente(jogador, "A");
+        this.batalha.adicionarCombatente(npc, "B");
         this.batalha.iniciar();
     }
 
